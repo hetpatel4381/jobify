@@ -1,3 +1,4 @@
+// api.js
 const myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
 
@@ -9,16 +10,22 @@ const raw = JSON.stringify({
 const requestOptions = {
   method: "POST",
   headers: myHeaders,
+  body: raw, // Add body to the request
 };
 
 export async function getData() {
-  const data = await fetch(
-    "https://api.weekday.technology/adhoc/getSampleJdJSON",
-    requestOptions
-  )
-    .then((response) => response.text())
-    .then((result) => console.log(result))
-    .catch((error) => console.error(error));
-
-  return data;
+  try {
+    const response = await fetch(
+      "https://api.weekday.technology/adhoc/getSampleJdJSON",
+      requestOptions
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    const data = await response.json(); // Parse JSON response
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
 }
