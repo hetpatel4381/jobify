@@ -1,5 +1,5 @@
 // HomePage.jsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FilterLayout from "../components/FilterLayout";
 import JobCard from "../components/JobCard";
 
@@ -8,7 +8,7 @@ function HomePage() {
     minExp: "",
     companyName: "",
     location: "",
-    isRemote: false,
+    isRemote: null,
     techStack: "",
     role: "",
     minBasePay: "",
@@ -90,28 +90,21 @@ function HomePage() {
   // Apply filters to jobs
   const filteredJobs = jobs.filter((job) => {
     const titleMatch =
-      job.jobTitle.includes(filters.jobTitle) ||
-      filters.jobTitle === "";
+      job.jobTitle.includes(filters.jobTitle) || filters.jobTitle === "";
     const companyMatch =
-      job.companyName
-        
-        .includes(filters.companyName) ||
+      job.companyName.includes(filters.companyName) ||
       filters.companyName === "";
     const locationMatch =
-      job.location.includes(filters.location) ||
-      filters.location === "";
+      job.location.includes(filters.location) || filters.location === "";
     const remoteMatch = filters.isRemote ? job.isRemote : true;
     const techStackMatch =
-      job.techStack.includes(filters.techStack) ||
-      filters.techStack === "";
-    const roleMatch =
-      job.role.includes(filters.role) ||
-      filters.role === "";
+      job.techStack.includes(filters.techStack) || filters.techStack === "";
+    const roleMatch = job.role.includes(filters.role) || filters.role === "";
     const minBasePayMatch =
       job.minBasePay >= parseInt(filters.minBasePay) ||
       filters.minBasePay === "";
 
-    return (
+    return !(
       titleMatch &&
       companyMatch &&
       locationMatch &&
